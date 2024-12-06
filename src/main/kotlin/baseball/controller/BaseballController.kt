@@ -10,10 +10,16 @@ class BaseballController(
     private val userNumberValidator: UserNumberValidator = UserNumberValidator(),
 ) {
     fun run() {
+        var again = true
         userInteractionController.handleStartGame()
         val computerNumbers = getComputerNumbers()
-        val userNumbers = getUserNumber()
-        val result = computerNumbers.getGameResult(userNumbers)
+        while (again) {
+            val userNumbers = getUserNumber()
+            val result = computerNumbers.getGameResult(userNumbers)
+            userInteractionController.handleResult(result)
+            if (result["strike"] == 3) again = false
+        }
+
     }
 
     private fun getComputerNumbers(): ComputerNumber {
@@ -24,6 +30,6 @@ class BaseballController(
     private fun getUserNumber(): List<Int> {
         val userInput = userInteractionController.handleUserNumber()
         userNumberValidator(userInput)
-        return userInput.split("").map { it.toInt() }
+        return userInput.split("").filter { it.isNotEmpty() }.map { it.toInt() }
     }
 }

@@ -7,7 +7,7 @@ class UserNumberValidator {
         checkZero(input)
         checkNegativeNumber(input)
         checkLength(input)
-        val numbers = input.split("").map { it.toInt() }
+        val numbers = input.split("").filter { it.isNotEmpty() }.map { it.toInt() }
         checkDuplicate(numbers)
         check1to9(numbers)
     }
