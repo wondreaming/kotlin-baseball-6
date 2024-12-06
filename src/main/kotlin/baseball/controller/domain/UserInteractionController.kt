@@ -34,4 +34,9 @@ class UserInteractionController(
         }
         outputView.showMsg("${ball}볼 ${strike}스트라이크")
     }
+
+    fun handleAgainGame(): String {
+        outputView.showMsg("게임을 새로 시작하려면 1, 종료하려면 2를 입력하세요.")
+        return inputView.getInput()
+    }
 }
