@@ -11,9 +11,9 @@ class BaseballController(
 ) {
     fun run() {
         userInteractionController.handleStartGame()
-        // 컴퓨터가 숫자 뽑음
         val computerNumbers = getComputerNumbers()
         val userNumbers = getUserNumber()
+        val result = computerNumbers.getGameResult(userNumbers)
     }
 
     private fun getComputerNumbers(): ComputerNumber {
