@@ -1,5 +1,8 @@
 package baseball.controller.domain.validator
 
+import baseball.constant.Game
+import baseball.util.splitAndInt
+
 class UserNumberValidator {
     operator fun invoke(input: String) {
         checkEmpty(input)
@@ -7,7 +10,7 @@ class UserNumberValidator {
         checkZero(input)
         checkNegativeNumber(input)
         checkLength(input)
-        val numbers = input.split("").filter { it.isNotEmpty() }.map { it.toInt() }
+        val numbers = input.splitAndInt()
         checkDuplicate(numbers)
         check1to9(numbers)
     }
@@ -21,15 +24,15 @@ class UserNumberValidator {
     }
 
     private fun checkZero(input: String) {
-        require(input.toInt() != 0) { UserNumberErrorType.ZERO }
+        require(input.toInt() != Game.ZERO.getValue()) { UserNumberErrorType.ZERO }
     }
 
     private fun checkNegativeNumber(input: String) {
-        require(input.toInt() > 0) { UserNumberErrorType.NEGATIVE_NUMBER }
+        require(input.toInt() > Game.ZERO.getValue()) { UserNumberErrorType.NEGATIVE_NUMBER }
     }
 
     private fun checkLength(input: String) {
-        require(input.length == 3) { UserNumberErrorType.LENGTH }
+        require(input.length == Game.NUMBER_SIZE.getValue()) { UserNumberErrorType.LENGTH }
     }
 
     private fun checkDuplicate(numbers: List<Int>) {
@@ -37,6 +40,6 @@ class UserNumberValidator {
     }
 
     private fun check1to9(numbers: List<Int>) {
-        require(numbers.all { it in 1..9 }) { UserNumberErrorType.OTHER }
+        require(numbers.all { it in Game.START_NUMBER.getValue()..Game.END_NUMBER.getValue() }) { UserNumberErrorType.OTHER }
     }
 }

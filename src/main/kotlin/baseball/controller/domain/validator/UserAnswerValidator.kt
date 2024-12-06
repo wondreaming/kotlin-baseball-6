@@ -11,6 +11,11 @@ class UserAnswerValidator {
     }
 
     private fun checkYesOrNo(input: String) {
-        require(input == "1" || input == "2") { UserAnswerErrorType.YES_OR_NO }
+        require(input == GAME_AGAIN_ANSWER || input == GAME_STOP_ANSWER) { UserAnswerErrorType.YES_OR_NO }
+    }
+
+    companion object {
+        private const val GAME_AGAIN_ANSWER = "1"
+        private const val GAME_STOP_ANSWER = "2"
     }
 }

@@ -1,7 +1,9 @@
 package baseball.controller.domain
 
-import InputView
-import OutputView
+import baseball.constant.Constants
+import baseball.constant.Game
+import baseball.view.InputView
+import baseball.view.OutputView
 
 class UserInteractionController(
     private val inputView: InputView = InputView(),
@@ -16,19 +18,19 @@ class UserInteractionController(
         return inputView.getInput()
     }
 
-    fun handleResult(result: Map<String, Int>) {
-        val strike = result["strike"]
-        val ball = result["ball"]
-        if (strike == 0 && ball == 0) {
+    fun handleResult(result: Map<Constants, Int>) {
+        val strike = result[Constants.STRIKE]
+        val ball = result[Constants.BALL]
+        if (strike == Game.ZERO.getValue() && ball == Game.ZERO.getValue()) {
             outputView.showMsg("낫싱")
             return
         }
-        if (ball == 0) {
+        if (ball == Game.ZERO.getValue()) {
             outputView.showMsg("${strike}스트라이크")
-            if (strike == 3) outputView.showMsg("3개의 숫자를 모두 맞히셨습니다! 게임 종료")
+            if (strike == Game.END_STRIKE.getValue()) outputView.showMsg("3개의 숫자를 모두 맞히셨습니다! 게임 종료")
             return
         }
-        if (strike == 0) {
+        if (strike == Game.ZERO.getValue()) {
             outputView.showMsg("${ball}볼")
             return
         }

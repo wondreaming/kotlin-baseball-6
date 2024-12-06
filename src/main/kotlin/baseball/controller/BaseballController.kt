@@ -1,10 +1,13 @@
 package baseball.controller
 
+import baseball.constant.Constants
+import baseball.constant.Game
 import baseball.controller.domain.UserInteractionController
 import baseball.controller.domain.validator.UserAnswerValidator
 import baseball.controller.domain.validator.UserNumberValidator
 import baseball.model.ComputerNumber
 import baseball.util.RandomNumber
+import baseball.util.splitAndInt
 
 class BaseballController(
     private val userInteractionController: UserInteractionController = UserInteractionController(),
@@ -21,7 +24,7 @@ class BaseballController(
                 val userNumbers = getUserNumber()
                 val result = computerNumbers.getGameResult(userNumbers)
                 userInteractionController.handleResult(result)
-                if (result["strike"] == 3) again = false
+                if (result[Constants.STRIKE] == Game.END_STRIKE.getValue()) again = false
             }
             userAnswer = getAgainGame()
         }
@@ -35,12 +38,16 @@ class BaseballController(
     private fun getUserNumber(): List<Int> {
         val userInput = userInteractionController.handleUserNumber()
         userNumberValidator(userInput)
-        return userInput.split("").filter { it.isNotEmpty() }.map { it.toInt() }
+        return userInput.splitAndInt()
     }
 
     private fun getAgainGame(): Boolean {
         val userAnswer = userInteractionController.handleAgainGame()
         userAnswerValidator(userAnswer)
-        return userAnswer == "1"
+        return userAnswer == GAME_AGAIN_ANSWER
+    }
+
+    companion object {
+        private const val GAME_AGAIN_ANSWER = "1"
     }
 }
