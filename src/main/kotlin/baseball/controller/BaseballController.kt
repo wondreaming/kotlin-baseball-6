@@ -17,15 +17,8 @@ class BaseballController(
     fun run() {
         var userAnswer = true
         while (userAnswer) {
-            var again = true
             userInteractionController.handleStartGame()
-            val computerNumbers = getComputerNumbers()
-            while (again) {
-                val userNumbers = getUserNumber()
-                val result = computerNumbers.getGameResult(userNumbers)
-                userInteractionController.handleResult(result)
-                if (result[Constants.STRIKE] == Game.END_STRIKE.getValue()) again = false
-            }
+            processGame()
             userAnswer = getAgainGame()
         }
     }
@@ -45,6 +38,17 @@ class BaseballController(
         val userAnswer = userInteractionController.handleAgainGame()
         userAnswerValidator(userAnswer)
         return userAnswer == GAME_AGAIN_ANSWER
+    }
+
+    private fun processGame() {
+        val computerNumbers = getComputerNumbers()
+        var again = true
+        while (again) {
+            val userNumbers = getUserNumber()
+            val result = computerNumbers.getGameResult(userNumbers)
+            userInteractionController.handleResult(result)
+            again = result[Constants.STRIKE] != Game.END_STRIKE.getValue()
+        }
     }
 
     companion object {
